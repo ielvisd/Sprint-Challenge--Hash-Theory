@@ -1,15 +1,47 @@
 #include <stdio.h>
 #include <stdlib.h>
+// #include "hashtable.c"
 #include "hashtable.h"
 #include "ex1.h"
 
 Answer *get_indices_of_item_weights(int *weights, int length, int limit)
 {
   HashTable *ht = create_hash_table(16);
+  
+  Answer *get_indices_of_item_weights = malloc(sizeof(Answer));
+  get_indices_of_item_weights->index_1 = -1;
+  get_indices_of_item_weights->index_2 = -1;
 
-  // YOUR CODE HERE
+  if (length <= 1) {
+    return NULL;
+  }
 
-  return NULL;
+  for (int i = 0 ; i < length; i++) {
+    hash_table_insert(ht, weights[i], i);
+  }
+
+  for (int i = 0 ; i < length; i++) {
+      
+    int foundWeight;
+
+    int checkIfInTable = hash_table_retrieve(ht, (limit - weights[i]));
+
+    if(checkIfInTable != -1) {
+        printf("checkIfInTable is: %d\n", checkIfInTable);
+        printf("Found something! %d\n", i);
+        foundWeight = limit - weights[i];
+        
+        if(get_indices_of_item_weights->index_2 == -1) {
+          get_indices_of_item_weights->index_2 = i;
+        }
+        
+        else if(get_indices_of_item_weights->index_2 != -1) {
+          get_indices_of_item_weights->index_1 = i;
+        }
+        
+    }
+  }
+  return get_indices_of_item_weights;
 }
 
 void print_answer(Answer *answer)
